@@ -29,6 +29,6 @@ public class Product {
 
     private long UserId;
     @ManyToMany(mappedBy = "products")
-    private Set<Order> orders = new HashSet<>();
+    private List<Order> orders = new ArrayList<>();
 
 }

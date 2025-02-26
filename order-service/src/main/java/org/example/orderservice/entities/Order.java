@@ -21,5 +21,7 @@
         private long id;
         @ElementCollection
         private List<Long> productIds = new ArrayList<>();
+        private long price;
+        private boolean isPaid = false;
 
     }

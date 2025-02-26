@@ -5,6 +5,7 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/payment-service" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
       </GradleProjectSettings>
     </option>
   </component>

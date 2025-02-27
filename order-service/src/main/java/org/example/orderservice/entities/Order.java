@@ -1,10 +1,7 @@
     package org.example.orderservice.entities;
 
     import jakarta.persistence.*;
-    import lombok.AllArgsConstructor;
-    import lombok.Getter;
-    import lombok.NoArgsConstructor;
-    import lombok.Setter;
+    import lombok.*;
     import org.example.productservice.entities.Product;
 
     import java.util.ArrayList;
@@ -14,6 +11,7 @@
     @Setter
     @Getter
     @AllArgsConstructor
+    @Builder
     @NoArgsConstructor
     public class Order {
         @Id

@@ -1,4 +1,12 @@
 package org.example.orderservice.dto;
 
-public record OrderRequest() {
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+public class OrderRequest {
+    private List<Long> productIds;
+    private long price;
+
 }

@@ -28,7 +28,7 @@ public class Product {
     private int quantity;
 
     private long UserId;
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(mappedBy = "product")
     private List<Order> orders = new ArrayList<>();
 
 }

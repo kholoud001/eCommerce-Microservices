@@ -1,3 +1,4 @@
+version: '3.8'
 
 services:
   keycloak:
@@ -29,6 +30,43 @@ services:
       - "5433:5432"
     volumes:
       - keycloak_data:/var/lib/postgresql/data
+
+  paymentt-service:
+    build:
+      context: ./paymentt-service
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    networks:
+      - micro_net
+    depends_on:
+      - config-service
+      - eureka-server
+
+  config-service:
+    image: springcloud/config-server
+    container_name: config-service
+    ports:
+      - "8888:8888"
+    environment:
+      SPRING_PROFILES_ACTIVE: native
+      SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCHLOCATIONS: file:/config-repo
+    volumes:
+      - ./config-repo:/config-repo
+    networks:
+      - micro_net
+
+  eureka-server:
+    image: springcloud/eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - micro_net
+
+networks:
+  micro_net:
+    driver: bridge
 
 volumes:
   keycloak_data:

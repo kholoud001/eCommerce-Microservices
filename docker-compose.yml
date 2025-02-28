@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   keycloak:
     image: quay.io/keycloak/keycloak:22.0
@@ -31,42 +29,34 @@ services:
     volumes:
       - keycloak_data:/var/lib/postgresql/data
 
-  paymentt-service:
+
+  user-service:
+    image: user-service
+    container_name: user-service
     build:
-      context: ./paymentt-service
+      context: ./user-service
       dockerfile: Dockerfile
     ports:
-      - "8082:8082"
-    networks:
-      - micro_net
-    depends_on:
-      - config-service
-      - eureka-server
-
-  config-service:
-    image: springcloud/config-server
-    container_name: config-service
-    ports:
-      - "8888:8888"
+      - "8081:8081"
     environment:
-      SPRING_PROFILES_ACTIVE: native
-      SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCHLOCATIONS: file:/config-repo
-    volumes:
-      - ./config-repo:/config-repo
-    networks:
-      - micro_net
+      SPRING_DATASOURCE_URL: jdbc:postgresql://user-service-db:5432/user_service_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: action
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/realms/eCommerce
+    depends_on:
+      - keycloak
+      - user-service-db
 
-  eureka-server:
-    image: springcloud/eureka-server
-    container_name: eureka-server
-    ports:
-      - "8761:8761"
-    networks:
-      - micro_net
-
-networks:
-  micro_net:
-    driver: bridge
+    user-service-db:
+      image: postgres:14
+      container_name: user-service-db
+      environment:
+        POSTGRES_DB: user_service_db
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: action
+      ports:
+        - "5433:5432"
 
 volumes:
   keycloak_data:
+  user_service_data:
